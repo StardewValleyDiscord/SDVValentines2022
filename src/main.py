@@ -34,12 +34,9 @@ async def on_raw_reaction_add(payload):
     if payload.channel_id == config.SUBMIT_CHANNEL and check_roles(payload.member, config.MOD_ROLES):
         server = client.guilds[0]
         channel = discord.utils.get(server.channels, id=payload.channel_id)
-        user = discord.utils.get(server.members, id=payload.user_id)
-        if not user:
-            return
-
-        await user.add_roles(*cupid.roles)
         message = await channel.fetch_message(payload.message_id)
+
+        await message.author.add_roles(*cupid.roles)
         await message.add_reaction(payload.emoji)
 
 client.run(config.DISCORD_KEY)
